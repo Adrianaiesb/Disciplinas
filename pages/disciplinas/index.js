@@ -11,16 +11,21 @@ const index = () => {
     const [disciplinas, setDisciplinas] = useState([])
 
     useEffect(() => {
+        getAll()
+    }, [])
+
+        function getAll(){
         axios.get('/api/disciplinas').then(resultado => {
             setDisciplinas(resultado.data);
         })
+    }
         
-    }, [])
-
         function excluir (id){
+            if (confirm('Deseja realmente ecluir o registro?')){
             axios.delete('/api/disciplinas/' +id)
+            getAll()
         }
-
+    }
     return (
         <Pagina titulo="Disciplinas">
 
@@ -38,7 +43,7 @@ const index = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {disciplinas.map( item  => (
+                    {disciplinas.map((item, i)  => (
                         <tr key={item.id}>
                             <td>
                                 <Link href={'/disciplinas/' + item.id}>
